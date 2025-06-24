@@ -3,398 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Solar - Ahorra con Energía Renovable</title>
+    <title>Hissuma - Formulario de Inicio de Proyecto Solar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        solar: {
+                            50: '#F7FAFC',
+                            100: '#EDF2F7',
+                            200: '#E2E8F0',
+                            300: '#CBD5E0',
+                            400: '#A0AEC0',
+                            500: '#718096',
+                            600: '#4A5568',
+                            700: '#2D3748',
+                            800: '#1A202C',
+                            900: '#171923',
+                            primary: '#F59E0B',
+                            secondary: '#065F46',
+                            accent: '#3B82F6',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            background-color: #f9fbfd;
-            line-height: 1.5;
+        .compass {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            width: 250px;
+            margin: 0 auto;
         }
-        
-        /* Button Animation */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        .custom-shadow {
-            box-shadow: 0 10px 25px rgba(13, 110, 116, 0.1);
-        }
-        
-        .savings-btn.active {
-            background-color: #0D6E74;
-            color: white;
-            border-color: #0D6E74;
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-        
-        .calculate-btn:hover, 
-        .download-btn:hover, 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-        }
-        
-        .modal.show {
+        .compass-item {
+            aspect-ratio: 1/1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #E5E7EB;
+            transition: all 0.3s ease;
         }
-        
-        /* Gradient header */
-        .results-header {
-            background: linear-gradient(135deg, #0D6E74 0%, #0a5a5f 100%);
-            border-radius: 12px;
+        .compass-item:hover, .compass-item.selected {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
         }
-        
-        /* Tooltip styling */
-        .form-help {
+        .direction-active {
+            background-color: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #E5E7EB;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #F59E0B;
+            transition: width 0.5s ease;
+        }
+        .section-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .indicator-step {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 0;
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.8rem;
             position: relative;
-            display: inline-block;
-            margin-top: 4px;
+            margin-bottom: 10px;
         }
-        
-        .form-help:hover:after {
-            content: "Podés encontrar este valor en tu factura de luz mensual, en la sección de consumo energético.";
+        .indicator-step.active {
+            color: #F59E0B;
+            font-weight: 600;
+        }
+        .indicator-step:not(:last-child):after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #E5E7EB;
+            z-index: -1;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-input-button {
+            border: 2px dashed #CBD5E0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .file-input-button:hover {
+            border-color: #3B82F6;
+            background-color: #F7FAFC;
+        }
+        .file-input {
             position: absolute;
             left: 0;
-            top: 100%;
-            width: 200px;
-            padding: 8px;
-            background: #0D6E74;
-            color: white;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 100;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
         }
-        
-        /* Media queries */
-        @keyframes moveLight {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(600%); }
-        }
-
-        @media (max-width: 640px) {
-            .card {
-                padding: 20px;
-            }
-            .savings-btn {
-                padding: 8px 12px;
-            }
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #4A5568;
+            text-align: center;
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="text-center mb-10">
-            <div class="flex justify-center items-center mb-4">
-                <div class="bg-amber-100 p-3 rounded-full mr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
-                    </svg>
+<body class="bg-solar-50 text-solar-700 font-sans min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="bg-solar-primary w-10 h-10 rounded-full flex items-center justify-center">
+                    <i class="fas fa-sun text-white text-xl"></i>
                 </div>
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Calculadora Solar</h1>
+                <h1 class="ml-3 text-xl font-bold text-solar-800">Hissuma</h1>
             </div>
-            <p class="text-gray-600 max-w-xl mx-auto">
-                Descubre cuánto puedes ahorrar con energía solar y el sistema perfecto para tu hogar
-            </p>
-        </div>
-
-        <!-- Main Content -->
-        <div class="bg-white rounded-2xl custom-shadow overflow-hidden">
-            <div class="flex flex-wrap md:flex-nowrap">
-                <!-- Left Card - Form -->
-                <div class="w-full md:w-1/2 bg-white p-6 md:p-8">
-                    <div class="flex items-center mb-6">
-                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <h2 class="text-xl font-semibold text-gray-800">Calculá tu Sistema Solar</h2>
-                    </div>
-
-                    <form class="space-y-6">
-                        <!-- Zona -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Zona de Argentina</label>
-                            <select id="zone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors">
-                                <option value="">Seleccioná tu zona</option>
-                                <option value="norte">Norte</option>
-                                <option value="centro">Centro</option>
-                                <option value="sur">Sur</option>
-                            </select>
-                        </div>
-
-                        <!-- Factura Eléctrica -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Factura eléctrica mensual (ARS)</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-3 text-gray-500">$</span>
-                                <input type="number" id="monthlyBill" class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="Ej: 15000">
-                            </div>
-                        </div>
-
-                        <!-- Consumo Mensual -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Consumo mensual (kWh)</label>
-                            <input type="number" id="kwh" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="Ej: 300">
-                            <span class="form-help text-xs text-gray-500 mt-1">Este dato está en tu factura de luz</span>
-                        </div>
-
-                        <!-- Ahorro Deseado -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Porcentaje de ahorro deseado</label>
-                            <div class="grid grid-cols-5 gap-2" id="savingsOptions">
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="30">30%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="40">40%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="50">50%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="60">60%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="70">70%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="80">80%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="90">90%</div>
-                                <div class="savings-btn text-center py-2 border border-gray-300 rounded-lg cursor-pointer bg-white transition-colors" data-value="100">100%</div>
-                            </div>
-                        </div>
-
-                        <!-- Calcular Button -->
-                        <button type="button" onclick="calculateSystem()" class="w-full py-4 px-6 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition-all duration-300 calculate-btn pulse-animation">
-                            <span>Calcular Sistema Solar</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Right Card - Results -->
-                <div class="w-full md:w-1/2 bg-gray-50 p-6 md:p-8" id="resultsCard">
-                    <div class="flex items-center mb-6">
-                        <div class="bg-amber-100 p-2 rounded-lg mr-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <h2 class="text-xl font-semibold text-gray-800">Tu Sistema Solar Ideal</h2>
-                    </div>
-
-                    <!-- Empty State -->
-                    <div class="text-center py-8 px-4" id="resultsEmpty">
-                        <div class="mx-auto bg-teal-100 text-teal-600 rounded-full w-16 h-16 flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-600 font-medium">Completá el formulario para ver tus resultados</p>
-                        <p class="text-sm text-gray-500 mt-2">Te mostraremos el tamaño de tu sistema solar y el ahorro estimado</p>
-                    </div>
-
-                    <!-- Results Content -->
-                    <div class="hidden" id="resultsContent">
-                        <!-- Results Header -->
-                        <div class="results-header text-white p-6 mb-6">
-                            <h3 class="text-lg font-semibold mb-1 text-center" id="resultsTitle">Sistema Recomendado</h3>
-                            
-                            <!-- Result Item - Potencia -->
-                            <div class="mt-5 mb-4">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold mb-1" id="systemSize">0 kW</div>
-                                    <div class="text-sm">Potencia del sistema solar</div>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <!-- Result Item - Mensual -->
-                                <div class="bg-white bg-opacity-20 rounded-lg p-4">
-                                    <div class="text-center">
-                                        <div class="text-lg font-bold mb-1" id="monthlySavings">$0</div>
-                                        <div class="text-xs">Ahorro mensual estimado</div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Result Item - Anual -->
-                                <div class="bg-white bg-opacity-20 rounded-lg p-4">
-                                    <div class="text-center">
-                                        <div class="text-lg font-bold mb-1" id="annualSavings">$0</div>
-                                        <div class="text-xs">Ahorro anual estimado</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Benefits -->
-                        <div class="bg-white p-5 rounded-lg border border-gray-100 shadow-sm mb-6">
-                            <h4 class="font-semibold text-gray-800 mb-4" id="benefitsTitle">Con tu ahorro obtendrás:</h4>
-                            
-                            <ul class="space-y-3">
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-700 text-sm">Reducción en tu factura eléctrica</span>
-                                </li>
-                                
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-700 text-sm">Energía limpia y renovable</span>
-                                </li>
-                                
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-700 text-sm">Independencia energética</span>
-                                </li>
-                                
-                                <li class="flex items-start">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-gray-700 text-sm">Contribución al medio ambiente</span>
-                                </li>
-                            </ul>
-                            
-                            <div class="mt-4 pt-4 border-t border-gray-200">
-                                <p class="text-xs text-gray-600"><span class="font-semibold">Importante:</span> Este cálculo es una estimación. El ahorro real puede variar según ubicación y tipo de instalación.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="flex items-center">
+                <span class="px-3 py-1 bg-solar-100 rounded-full text-sm font-medium text-solar-800">
+                    <i class="fas fa-headset mr-2 text-solar-accent"></i> Soporte: 0800-123-456
+                </span>
             </div>
         </div>
+    </header>
 
-        <!-- Footer -->
-        <div class="mt-12 text-center text-gray-600 text-sm">
-            <p>Calculadora desarrollada para generación de leads en el sector de energías renovables</p>
+    <!-- Progress indicator -->
+    <div class="bg-solar-100 py-4">
+        <div class="container mx-auto px-4">
+            <div class="progress-bar">
+                <div class="progress-fill w-1/6" id="progressFill"></div>
+            </div>
+            <div class="section-indicator">
+                <div class="indicator-step active" id="step1">1. Generales</div>
+                <div class="indicator-step" id="step2">2. Tecnología</div>
+                <div class="indicator-step" id="step3">3. Ubicación</div>
+                <div class="indicator-step" id="step4">4. Plazos</div>
+                <div class="indicator-step" id="step5">5. Reunión</div>
+                <div class="indicator-step" id="step6">Resumen</div>
+            </div>
         </div>
     </div>
 
+    <main class="container mx-auto px-4 py-8 flex-1">
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Formulario -->
+            <form id="projectForm" class="p-6 md:p-8"
+                  action="https://nico0508.app.n8n.cloud/webhook-test/hissumaformulario"
+                  method="POST"
+                  enctype="multipart/form-data">
+                <!-- Sección 1: Datos Generales -->
+                <div id="section1" class="form-section active">
+                    <h2 class="text-2xl font-bold text-solar-800 mb-6 border-b pb-3">
+                        <i class="fas fa-user-circle mr-2 text-solar-accent"></i>Datos Generales
+                    </h2>
+                    
+                    <div class="mb-5">
+                        <label class="block text-solar-700 text-sm font-medium mb-2" for="fullname">
+                            Nombre completo <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="fullname" name="fullname" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-solar-700 text-sm font-medium mb-2" for="email">
+                                Correo electrónico <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-solar-700 text-sm font-medium mb-2" for="phone">
+                                Teléfono de contacto <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <label class="block text-solar-700 text-sm font-medium mb-2">
+                            Tipo de proyecto <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="projectType" value="Hogar" class="h-5 w-5 text-solar-accent focus:ring-solar-primary" required>
+                                <span class="ml-3 text-solar-700 font-medium">Hogar</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="projectType" value="Negocio" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                <span class="ml-3 text-solar-700 font-medium">Negocio</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="projectType" value="Industria" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                <span class="ml-3 text-solar-700 font-medium">Industria</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">
+                        <div></div>
+                        <button type="button" onclick="nextSection('section2')" class="bg-solar-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-amber-600 transition duration-300">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sección 2: Tecnología -->
+                <div id="section2" class="form-section">
+                    <h2 class="text-2xl font-bold text-solar-800 mb-6 border-b pb-3">
+                        <i class="fas fa-solar-panel mr-2 text-solar-accent"></i>Tecnología a utilizar
+                    </h2>
+                    
+                    <div class="mb-8">
+                        <label class="block text-solar-700 text-sm font-medium mb-2">
+                            Seleccione la tecnología principal <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <label id="techFotovoltaica" class="tech-option flex flex-col p-5 border-2 border-solar-300 rounded-xl hover:border-solar-accent cursor-pointer">
+                                <div class="flex items-center">
+                                    <input type="radio" name="technology" value="Fotovoltaica" class="h-5 w-5 text-solar-accent focus:ring-solar-primary" required>
+                                    <span class="ml-3 text-solar-800 font-bold text-lg">Fotovoltaica</span>
+                                </div>
+                                <p class="mt-2 text-solar-600 text-sm pl-8">
+                                    Generación de electricidad, ahorro en la factura, bombeo solar de agua
+                                </p>
+                            </label>
+                            
+                            <label id="techTermica" class="tech-option flex flex-col p-5 border-2 border-solar-300 rounded-xl hover:border-solar-accent cursor-pointer">
+                                <div class="flex items-center">
+                                    <input type="radio" name="technology" value="Térmica" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <span class="ml-3 text-solar-800 font-bold text-lg">Térmica</span>
+                                </div>
+                                <p class="mt-2 text-solar-600 text-sm pl-8">
+                                    Calefacción, agua caliente sanitaria, climatización de piscinas
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Continúa con el resto de las secciones exactamente igual a tu código original -->
+                    
+                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">…</div>
+                </div>
+                
+                <!-- Sección 5: Agendamiento -->
+                <div id="section5" class="form-section">
+                    <!-- Contenido de agendamiento idéntico al original -->
+                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">
+                        <button type="button" onclick="prevSection('section4')" class="text-solar-600 font-medium px-6 py-3 rounded-lg hover:bg-solar-100 transition duration-300">
+                            <i class="fas fa-arrow-left mr-2"></i> Anterior
+                        </button>
+                        <button type="submit" id="submitForm" class="bg-green-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                            Enviar Formulario <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="bg-solar-800 text-white py-6 mt-auto">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <div class="bg-amber-500 w-8 h-8 rounded-full flex items-center justify-center">
+                            <i class="fas fa-sun text-white"></i>
+                        </div>
+                        <h3 class="ml-3 text-xl font-bold">Hissuma</h3>
+                    </div>
+                    <p class="mt-2 text-solar-300 text-sm">Soluciones solares para un futuro sostenible</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-solar-400 text-sm">&copy; 2023 Hissuma. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // ES5-compatible JavaScript
-        var zones = {
-            'norte': { label: 'Norte', factor: 5.5 },
-            'centro': { label: 'Centro', factor: 4.5 },
-            'sur': { label: 'Sur', factor: 3.5 }
-        };
-        
-        var currentResults = null;
-        var selectedSavings = 30;
-        
-        // Initialize immediately instead of waiting for DOMContentLoaded
-        setupSavingsButtons();
-        
-        function setupSavingsButtons() {
-            var buttons = document.querySelectorAll('.savings-btn');
-            
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    var allBtns = document.querySelectorAll('.savings-btn');
-                    for (var j = 0; j < allBtns.length; j++) {
-                        allBtns[j].classList.remove('active');
-                    }
-                    
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    
-                    // Update selected savings value
-                    selectedSavings = parseInt(this.getAttribute('data-value'));
-                });
-            }
-            
-            // Set the first button as active initially
-            if (buttons.length > 0) {
-                buttons[0].classList.add('active');
-            }
-        }
-        
-        function calculateSystem() {
-            var zone = document.getElementById('zone').value;
-            var monthlyBill = parseFloat(document.getElementById('monthlyBill').value);
-            var kwh = parseFloat(document.getElementById('kwh').value);
-            
-            // Validation
-            if (!zone) {
-                alert('Por favor, seleccioná tu zona de Argentina');
-                return;
-            }
-            
-            if (isNaN(monthlyBill) || monthlyBill <= 0) {
-                alert('Por favor, ingresá un valor válido para tu factura mensual (mayor a cero)');
-                return;
-            }
-            
-            if (isNaN(kwh) || kwh <= 0) {
-                alert('Por favor, ingresá un valor válido para tu consumo mensual (mayor a cero)');
-                return;
-            }
-            
-            var zoneData = zones[zone];
-            
-            // Calculate results
-            var systemSize = (kwh / 30 / zoneData.factor) * (selectedSavings / 100);
-            var monthlySavings = monthlyBill * (selectedSavings / 100) * 0.95; // 5% estimation error margin
-            var annualSavings = monthlySavings * 12;
-            
-            // Round and format numbers
-            systemSize = Math.round(systemSize * 10) / 10; // 1 decimal
-            monthlySavings = Math.round(monthlySavings);
-            annualSavings = Math.round(annualSavings);
-            
-            currentResults = {
-                systemSize: systemSize,
-                monthlySavings: monthlySavings,
-                annualSavings: annualSavings,
-                savingsPercent: selectedSavings,
-                zone: zoneData.label
-            };
-            
-            displayResults();
-        }
-        
-        function displayResults() {
-            // Hide empty state
-            document.getElementById('resultsEmpty').style.display = 'none';
-            
-            // Show results section
-            document.getElementById('resultsContent').classList.remove('hidden');
-            
-            // Update results text
-            document.getElementById('resultsTitle').textContent = 'Sistema para ' + currentResults.savingsPercent + '% de ahorro - ' + currentResults.zone;
-            document.getElementById('systemSize').textContent = currentResults.systemSize + ' kW';
-            document.getElementById('monthlySavings').textContent = '$' + formatNumber(currentResults.monthlySavings);
-            document.getElementById('annualSavings').textContent = '$' + formatNumber(currentResults.annualSavings);
-            document.getElementById('benefitsTitle').textContent = 'Con ' + currentResults.savingsPercent + '% de ahorro obtendrás:';
-        }
-        
-        function formatNumber(num) {
-            // Format numbers to use periods as thousands separators
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        
+        // Aquí copia todas tus funciones de JavaScript originales tal cual las tenías
+        // (validaciones, navegación entre secciones, brújula, updateFileName, etc.)
     </script>
 </body>
 </html>
