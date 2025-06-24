@@ -45,6 +45,7 @@
             width: 250px;
             margin: 0 auto;
         }
+        
         .compass-item {
             aspect-ratio: 1/1;
             display: flex;
@@ -55,16 +56,19 @@
             border: 2px solid #E5E7EB;
             transition: all 0.3s ease;
         }
+        
         .compass-item:hover, .compass-item.selected {
             background-color: #3B82F6;
             color: white;
             border-color: #3B82F6;
         }
+        
         .direction-active {
             background-color: #3B82F6;
             color: white;
             border-color: #3B82F6;
         }
+        
         .progress-bar {
             height: 8px;
             background-color: #E5E7EB;
@@ -72,17 +76,20 @@
             overflow: hidden;
             margin: 20px 0;
         }
+        
         .progress-fill {
             height: 100%;
             background-color: #F59E0B;
             transition: width 0.5s ease;
         }
+        
         .section-indicator {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
+        
         .indicator-step {
             flex: 1;
             min-width: 80px;
@@ -93,10 +100,12 @@
             position: relative;
             margin-bottom: 10px;
         }
+        
         .indicator-step.active {
             color: #F59E0B;
             font-weight: 600;
         }
+        
         .indicator-step:not(:last-child):after {
             content: '';
             position: absolute;
@@ -107,23 +116,29 @@
             background-color: #E5E7EB;
             z-index: -1;
         }
+        
         .form-section {
             display: none;
         }
+        
         .form-section.active {
             display: block;
             animation: fadeIn 0.5s ease;
         }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Estilos para el input de archivo */
         .file-input-container {
             position: relative;
             overflow: hidden;
             display: inline-block;
             width: 100%;
         }
+        
         .file-input-button {
             border: 2px dashed #CBD5E0;
             border-radius: 0.5rem;
@@ -136,10 +151,12 @@
             transition: all 0.3s ease;
             width: 100%;
         }
+        
         .file-input-button:hover {
             border-color: #3B82F6;
             background-color: #F7FAFC;
         }
+        
         .file-input {
             position: absolute;
             left: 0;
@@ -149,6 +166,7 @@
             height: 100%;
             cursor: pointer;
         }
+        
         .file-name {
             margin-top: 0.5rem;
             font-size: 0.875rem;
@@ -195,10 +213,7 @@
     <main class="container mx-auto px-4 py-8 flex-1">
         <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Formulario -->
-            <form id="projectForm" class="p-6 md:p-8"
-                  action="https://nico0508.app.n8n.cloud/webhook-test/hissumaformulario"
-                  method="POST"
-                  enctype="multipart/form-data">
+            <form id="projectForm" class="p-6 md:p-8">
                 <!-- Sección 1: Datos Generales -->
                 <div id="section1" class="form-section active">
                     <h2 class="text-2xl font-bold text-solar-800 mb-6 border-b pb-3">
@@ -289,20 +304,428 @@
                         </div>
                     </div>
                     
-                    <!-- Continúa con el resto de las secciones exactamente igual a tu código original -->
+                    <!-- Fotovoltaica Detalles -->
+                    <div id="fotovoltaicaDetails" class="hidden mb-5 bg-solar-50 p-5 rounded-xl">
+                        <h3 class="text-lg font-bold text-solar-800 mb-4">
+                            <i class="fas fa-bolt mr-2 text-solar-accent"></i>Detalles Fotovoltaica
+                        </h3>
+                        
+                        <div class="mb-5">
+                            <label class="block text-solar-700 text-sm font-medium mb-2">
+                                Modalidad de conexión <span class="text-red-500">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                    <input type="radio" name="connectionMode" value="On-grid" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <span class="ml-3 text-solar-700 font-medium">On-grid (Conectado a la red)</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                    <input type="radio" name="connectionMode" value="Off-grid" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <span class="ml-3 text-solar-700 font-medium">Off-grid (Sistema autónomo)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="onGridDetails" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                            <div>
+                                <label class="block text-solar-700 text-sm font-medium mb-2" for="configType">
+                                    Configuración eléctrica <span class="text-red-500">*</span>
+                                </label>
+                                <select id="configType" name="configType" class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Monofásico">Monofásico</option>
+                                    <option value="Trifásico">Trifásico</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg mb-5">
+                            <label class="block text-solar-700 text-sm font-medium mb-2">
+                                Consumo estimado
+                            </label>
+                            <p class="text-solar-600 text-xs mb-3">Puedes encontrar el valor de kWh en tu factura de electricidad, generalmente en la sección de "Detalle de consumo".</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-solar-700 text-sm mb-2" for="invoiceAmount">
+                                        Monto promedio de la factura
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-solar-500">
+                                            $
+                                        </div>
+                                        <input type="text" id="invoiceAmount" name="invoiceAmount" class="w-full pl-8 pr-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="0.00">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-solar-700 text-sm mb-2" for="kwhConsumption">
+                                        Consumo promedio (kWh mensuales)
+                                    </label>
+                                    <div class="relative">
+                                        <input type="text" id="kwhConsumption" name="kwhConsumption" class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="0">
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-solar-500">
+                                            kWh
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Campo para adjuntar factura eléctrica -->
+                            <div class="mt-4">
+                                <label class="block text-solar-700 text-sm font-medium mb-2">
+                                    Adjuntar factura eléctrica (opcional)
+                                </label>
+                                <p class="text-solar-500 text-xs mb-2">Formatos aceptados: PDF, JPG, JPEG, PNG (máx. 5MB)</p>
+                                
+                                <div class="file-input-container">
+                                    <div class="file-input-button">
+                                        <i class="fas fa-file-upload text-3xl text-solar-400 mb-2"></i>
+                                        <span class="text-solar-700 font-medium">Seleccionar archivo</span>
+                                        <span class="text-solar-500 text-sm">o arrastrar y soltar</span>
+                                        <span id="fileName" class="file-name"></span>
+                                    </div>
+                                    <input type="file" id="electricBill" name="electricBill" class="file-input" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName(this)">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="offGridDetails" class="hidden bg-white p-4 rounded-lg">
+                            <h4 class="text-md font-bold text-solar-800 mb-3">
+                                <i class="fas fa-water mr-2 text-blue-500"></i>Sistema de bombeo solar
+                            </h4>
+                            <p class="text-solar-600 text-sm mb-3">La energía solar fotovoltaica también puede utilizarse para sistemas de bombeo de agua, ideal para zonas rurales o donde no llega la red eléctrica.</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-solar-700 text-sm mb-2" for="wellDepth">
+                                        Profundidad del pozo (metros)
+                                    </label>
+                                    <div class="relative">
+                                        <input type="text" id="wellDepth" name="wellDepth" class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="0">
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-solar-500">
+                                            m
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-solar-700 text-sm mb-2" for="waterLiters">
+                                        Litros de agua a extraer por día
+                                    </label>
+                                    <div class="relative">
+                                        <input type="text" id="waterLiters" name="waterLiters" class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="0">
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-solar-500">
+                                            L
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">…</div>
+                    <!-- Térmica Detalles -->
+                    <div id="termicaDetails" class="hidden mb-5 bg-solar-50 p-5 rounded-xl">
+                        <h3 class="text-lg font-bold text-solar-800 mb-4">
+                            <i class="fas fa-fire mr-2 text-orange-500"></i>Detalles Térmica
+                        </h3>
+                        <p class="text-solar-600 text-sm mb-4">La energía solar térmica aprovecha el calor del sol para calentar agua u otros fluidos, siendo ideal para aplicaciones de calefacción, agua caliente sanitaria o climatización de piscinas.</p>
+                        
+                        <div class="mb-5">
+                            <label class="block text-solar-700 text-sm font-medium mb-2">
+                                Interés principal en el proyecto <span class="text-red-500">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                    <input type="radio" name="thermalInterest" value="Calefacción/Climatización" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <span class="ml-3 text-solar-700">Calefacción/Climatización</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                    <input type="radio" name="thermalInterest" value="Agua caliente sanitaria" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <span class="ml-3 text-solar-700">Agua caliente sanitaria</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                    <input type="radio" name="thermalInterest" value="Climatización de piscina" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <span class="ml-3 text-solar-700">Climatización de piscina</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">
+                        <button type="button" onclick="prevSection('section1')" class="text-solar-600 font-medium px-6 py-3 rounded-lg hover:bg-solar-100 transition duration-300">
+                            <i class="fas fa-arrow-left mr-2"></i> Anterior
+                        </button>
+                        <button type="button" onclick="nextSection('section3')" class="bg-solar-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-amber-600 transition duration-300">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sección 3: Ubicación -->
+                <div id="section3" class="form-section">
+                    <h2 class="text-2xl font-bold text-solar-800 mb-6 border-b pb-3">
+                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>Ubicación y Características
+                    </h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-solar-800 mb-4">Dirección completa <span class="text-red-500">*</span></h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-solar-700 text-sm font-medium mb-2" for="street">
+                                    Calle y número <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="street" name="street" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="Ej: Av. Corrientes 1234">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-solar-700 text-sm font-medium mb-2" for="postalCode">
+                                    Código postal <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="postalCode" name="postalCode" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="Ej: 1000">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-solar-700 text-sm font-medium mb-2" for="city">
+                                    Ciudad <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="city" name="city" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="Ej: Buenos Aires">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-solar-700 text-sm font-medium mb-2" for="province">
+                                    Provincia <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="province" name="province" required class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="Ej: Buenos Aires">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-solar-700 text-sm font-medium mb-2">
+                            Orientación del área de instalación <span class="text-red-500">*</span>
+                        </label>
+                        <p class="text-solar-600 text-sm mb-4">Selecciona la orientación principal del techo o área donde se instalarán los paneles solares. Puedes usar la brújula de tu dispositivo móvil para determinar esta orientación.</p>
+                        
+                        <div class="compass">
+                            <div class="compass-item" data-direction="Noroeste">NO</div>
+                            <div class="compass-item" data-direction="Norte">N</div>
+                            <div class="compass-item" data-direction="Noreste">NE</div>
+                            <div class="compass-item" data-direction="Oeste">O</div>
+                            <div class="flex items-center justify-center text-solar-500">
+                                <i class="fas fa-compass text-2xl"></i>
+                            </div>
+                            <div class="compass-item" data-direction="Este">E</div>
+                            <div class="compass-item" data-direction="Suroeste">SO</div>
+                            <div class="compass-item" data-direction="Sur">S</div>
+                            <div class="compass-item" data-direction="Sureste">SE</div>
+                        </div>
+                        <input type="hidden" id="orientation" name="orientation">
+                    </div>
+                    
+                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">
+                        <button type="button" onclick="prevSection('section2')" class="text-solar-600 font-medium px-6 py-3 rounded-lg hover:bg-solar-100 transition duration-300">
+                            <i class="fas fa-arrow-left mr-2"></i> Anterior
+                        </button>
+                        <button type="button" onclick="nextSection('section4')" class="bg-solar-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-amber-600 transition duration-300">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sección 4: Plazos -->
+                <div id="section4" class="form-section">
+                    <h2 class="text-2xl font-bold text-solar-800 mb-6 border-b pb-3">
+                        <i class="fas fa-calendar-alt mr-2 text-purple-500"></i>Plazos y Comentarios
+                    </h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-solar-700 text-sm font-medium mb-2">
+                            Fecha estimada de inicio del proyecto <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="startDate" value="Inmediato" class="h-5 w-5 text-solar-accent focus:ring-solar-primary" required>
+                                <span class="ml-3 text-solar-700 font-medium">A la brevedad / Lo antes posible</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="startDate" value="1-3 meses" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                <span class="ml-3 text-solar-700 font-medium">Dentro de 1 a 3 meses</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="startDate" value="4-6 meses" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                <span class="ml-3 text-solar-700 font-medium">Dentro de 4 a 6 meses</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-solar-300 rounded-lg hover:border-solar-accent cursor-pointer">
+                                <input type="radio" name="startDate" value="+6 meses" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                <span class="ml-3 text-solar-700 font-medium">Más de 6 meses</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-solar-700 text-sm font-medium mb-2" for="comments">
+                            Comentarios adicionales o detalles relevantes
+                        </label>
+                        <textarea id="comments" name="comments" rows="4" class="w-full px-4 py-3 border border-solar-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-solar-primary" placeholder="Por favor, incluya cualquier información adicional que considere importante..."></textarea>
+                    </div>
+                    
+                    <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">
+                        <button type="button" onclick="prevSection('section3')" class="text-solar-600 font-medium px-6 py-3 rounded-lg hover:bg-solar-100 transition duration-300">
+                            <i class="fas fa-arrow-left mr-2"></i> Anterior
+                        </button>
+                        <button type="button" onclick="nextSection('section5')" class="bg-solar-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-amber-600 transition duration-300">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Sección 5: Agendamiento -->
                 <div id="section5" class="form-section">
-                    <!-- Contenido de agendamiento idéntico al original -->
+                    <h2 class="text-2xl font-bold text-solar-800 mb-6 border-b pb-3">
+                        <i class="fas fa-calendar-check mr-2 text-green-500"></i>Agendamiento de Reunión
+                    </h2>
+                    
+                    <p class="text-solar-600 mb-6">Selecciona la sucursal en la que deseas atenderse y agenda tu reunión virtual con nuestros especialistas.</p>
+                    
+                    <div class="mb-8">
+                        <label class="block text-solar-700 text-sm font-medium mb-2">
+                            Sucursales disponibles <span class="text-red-500">*</span>
+                        </label>
+                        
+                        <div class="space-y-3">
+                            <div class="branch-option">
+                                <div class="flex items-center p-4 border border-solar-300 rounded-lg">
+                                    <input type="radio" name="branch" value="Proyectos Rosario" class="h-5 w-5 text-solar-accent focus:ring-solar-primary" required>
+                                    <div class="ml-4">
+                                        <span class="font-medium text-solar-800">Proyectos Rosario</span>
+                                        <p class="text-solar-600 text-sm mt-1">
+                                            <i class="fas fa-map-marker-alt mr-1 text-red-500"></i> Av. Rosario 1234, Rosario, Santa Fe
+                                        </p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="https://b24-mjzars.bitrix24.es/pub/calendar-sharing/694fec585669a042f4f8f0c3cd4febfd73f4b72f7ac62bdc26ffd669a2d46586/" target="_blank" class="schedule-btn bg-solar-primary hover:bg-amber-600 text-white px-4 py-2 rounded-md transition duration-300 whitespace-nowrap inline-block">
+                                            <i class="fas fa-calendar-plus mr-1"></i> Agendar reunión
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch-option">
+                                <div class="flex items-center p-4 border border-solar-300 rounded-lg">
+                                    <input type="radio" name="branch" value="Proyectos CABA" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <div class="ml-4">
+                                        <span class="font-medium text-solar-800">Proyectos CABA</span>
+                                        <p class="text-solar-600 text-sm mt-1">
+                                            <i class="fas fa-map-marker-alt mr-1 text-red-500"></i> Av. Corrientes 456, CABA
+                                        </p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="https://b24-mjzars.bitrix24.es/pub/calendar-sharing/52c5a8dcfd771e9ccdb3f1c414be9a1f94b2e785d53e99b05b40badf1635bba0/" target="_blank" class="schedule-btn bg-solar-primary hover:bg-amber-600 text-white px-4 py-2 rounded-md transition duration-300 whitespace-nowrap inline-block">
+                                            <i class="fas fa-calendar-plus mr-1"></i> Agendar reunión
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch-option">
+                                <div class="flex items-center p-4 border border-solar-300 rounded-lg">
+                                    <input type="radio" name="branch" value="Proyectos Córdoba" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <div class="ml-4">
+                                        <span class="font-medium text-solar-800">Proyectos Córdoba</span>
+                                        <p class="text-solar-600 text-sm mt-1">
+                                            <i class="fas fa-map-marker-alt mr-1 text-red-500"></i> Av. Colón 789, Córdoba Capital
+                                        </p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="https://b24-mjzars.bitrix24.es/pub/calendar-sharing/9c1a8818fc880efb8c9bc9ac1e6ff17d7a232b071015cc577007382ac22ec974/" target="_blank" class="schedule-btn bg-solar-primary hover:bg-amber-600 text-white px-4 py-2 rounded-md transition duration-300 whitespace-nowrap inline-block">
+                                            <i class="fas fa-calendar-plus mr-1"></i> Agendar reunión
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch-option">
+                                <div class="flex items-center p-4 border border-solar-300 rounded-lg">
+                                    <input type="radio" name="branch" value="Proyectos Neuquén" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <div class="ml-4">
+                                        <span class="font-medium text-solar-800">Proyectos Neuquén</span>
+                                        <p class="text-solar-600 text-sm mt-1">
+                                            <i class="fas fa-map-marker-alt mr-1 text-red-500"></i> Ruta 22 Km 1180, Neuquén Capital
+                                        </p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="https://b24-mjzars.bitrix24.es/~MhmIf" target="_blank" class="schedule-btn bg-solar-primary hover:bg-amber-600 text-white px-4 py-2 rounded-md transition duration-300 whitespace-nowrap inline-block">
+                                            <i class="fas fa-calendar-plus mr-1"></i> Agendar reunión
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch-option">
+                                <div class="flex items-center p-4 border border-solar-300 rounded-lg">
+                                    <input type="radio" name="branch" value="Proyectos Provincia Buenos Aires" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <div class="ml-4">
+                                        <span class="font-medium text-solar-800">Proyectos Provincia Buenos Aires</span>
+                                        <p class="text-solar-600 text-sm mt-1">
+                                            <i class="fas fa-map-marker-alt mr-1 text-red-500"></i> Av. San Martín 1500, Lomas de Zamora
+                                        </p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="https://b24-mjzars.bitrix24.es/~7qjnF" target="_blank" class="schedule-btn bg-solar-primary hover:bg-amber-600 text-white px-4 py-2 rounded-md transition duration-300 whitespace-nowrap inline-block">
+                                            <i class="fas fa-calendar-plus mr-1"></i> Agendar reunión
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="branch-option">
+                                <div class="flex items-center p-4 border border-solar-300 rounded-lg">
+                                    <input type="radio" name="branch" value="Grandes Proyectos" class="h-5 w-5 text-solar-accent focus:ring-solar-primary">
+                                    <div class="ml-4">
+                                        <span class="font-medium text-solar-800">Grandes Proyectos</span>
+                                        <p class="text-solar-600 text-sm mt-1">
+                                            <i class="fas fa-map-marker-alt mr-1 text-red-500"></i> Oficina Central, Buenos Aires
+                                        </p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="https://b24-mjzars.bitrix24.es/~CHczp" target="_blank" class="schedule-btn bg-solar-primary hover:bg-amber-600 text-white px-4 py-2 rounded-md transition duration-300 whitespace-nowrap inline-block">
+                                            <i class="fas fa-calendar-plus mr-1"></i> Agendar reunión
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="flex justify-between mt-10 pt-5 border-t border-solar-200">
                         <button type="button" onclick="prevSection('section4')" class="text-solar-600 font-medium px-6 py-3 rounded-lg hover:bg-solar-100 transition duration-300">
                             <i class="fas fa-arrow-left mr-2"></i> Anterior
                         </button>
-                        <button type="submit" id="submitForm" class="bg-green-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
+                        <button type="button" id="submitForm" class="bg-green-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300">
                             Enviar Formulario <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección 6: Confirmación -->
+                <div id="section6" class="form-section">
+                    <div class="text-center py-12">
+                        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+                            <i class="fas fa-check text-green-600 text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-solar-800 mb-4">¡Formulario enviado con éxito!</h2>
+                        <p class="text-solar-600 mb-6 max-w-lg mx-auto">
+                            Hemos recibido tu información correctamente. Un asesor especializado se pondrá en contacto contigo en las próximas 24-48 horas para continuar con tu proyecto solar.
+                        </p>
+                        <p class="text-solar-600 mb-8 max-w-lg mx-auto">
+                            También recibirás un correo electrónico con los detalles de tu solicitud y próximos pasos.
+                        </p>
+                        <button type="button" onclick="location.reload()" class="bg-solar-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-amber-600 transition duration-300">
+                            <i class="fas fa-redo mr-2"></i> Enviar otro formulario
                         </button>
                     </div>
                 </div>
@@ -331,8 +754,238 @@
     </footer>
 
     <script>
-        // Aquí copia todas tus funciones de JavaScript originales tal cual las tenías
-        // (validaciones, navegación entre secciones, brújula, updateFileName, etc.)
+        // Variables globales
+        let currentSection = 1;
+        const totalSections = 6;
+        
+        // Actualizar indicador de progreso
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const progressPercentage = (currentSection / totalSections) * 100;
+            progressFill.style.width = `${progressPercentage}%`;
+            
+            // Actualizar indicadores de sección
+            for(let i = 1; i <= 6; i++) {
+                const step = document.getElementById(`step${i}`);
+                if (i === currentSection) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            }
+        }
+        
+        // Navegar entre secciones
+        function changeSection(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.getElementsByClassName('form-section');
+            for(let i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            
+            // Mostrar sección actual
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Actualizar sección actual
+            currentSection = parseInt(sectionId.replace('section', ''));
+            
+            // Actualizar progreso
+            updateProgress();
+            
+            // Scroll al inicio de la sección
+            window.scrollTo(0, 0);
+        }
+        
+        function nextSection(nextId) {
+            // Validar sección actual antes de cambiar
+            if (currentSection === 1) {
+                if (!validateSection1()) return;
+            } else if (currentSection === 2) {
+                if (!validateSection2()) return;
+            } else if (currentSection === 3) {
+                if (!validateSection3()) return;
+            }
+            
+            const nextSectionNum = parseInt(nextId.replace('section', ''));
+            changeSection(nextId);
+        }
+        
+        function prevSection(prevId) {
+            changeSection(prevId);
+        }
+        
+        // Validadores de secciones
+        function validateSection1() {
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const projectType = document.querySelector('input[name="projectType"]:checked');
+            
+            if (!fullname || !email || !phone || !projectType) {
+                alert('Por favor completa todos los campos obligatorios en la sección de Datos Generales.');
+                return false;
+            }
+            
+            // Validar email con expresión regular simple
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor ingresa un email válido.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function validateSection2() {
+            const technology = document.querySelector('input[name="technology"]:checked');
+            
+            if (!technology) {
+                alert('Por favor selecciona una tecnología.');
+                return false;
+            }
+            
+            // Validación para Fotovoltaica
+            if (technology.value === 'Fotovoltaica') {
+                const connectionMode = document.querySelector('input[name="connectionMode"]:checked');
+                
+                if (!connectionMode) {
+                    alert('Por favor selecciona una modalidad de conexión.');
+                    return false;
+                }
+                
+                if (connectionMode.value === 'On-grid') {
+                    const configType = document.getElementById('configType').value;
+                    if (!configType) {
+                        alert('Por favor selecciona una configuración eléctrica.');
+                        return false;
+                    }
+                }
+            } else if (technology.value === 'Térmica') {
+                const thermalInterest = document.querySelector('input[name="thermalInterest"]:checked');
+                if (!thermalInterest) {
+                    alert('Por favor selecciona tu interés principal.');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        function validateSection3() {
+            const street = document.getElementById('street').value.trim();
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const province = document.getElementById('province').value.trim();
+            const orientation = document.getElementById('orientation').value;
+            
+            if (!street || !postalCode || !city || !province) {
+                alert('Por favor completa todos los campos obligatorios en la sección de Ubicación.');
+                return false;
+            }
+            
+            if (!orientation) {
+                alert('Por favor selecciona la orientación del área de instalación.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Manejar la visibilidad de detalles según tecnología seleccionada
+        function handleTechnologyChange() {
+            const fotovoltaicaOption = document.getElementById('techFotovoltaica');
+            const termicaOption = document.getElementById('techTermica');
+            
+            fotovoltaicaOption.addEventListener('click', () => {
+                document.getElementById('fotovoltaicaDetails').classList.remove('hidden');
+                document.getElementById('termicaDetails').classList.add('hidden');
+            });
+            
+            termicaOption.addEventListener('click', () => {
+                document.getElementById('termicaDetails').classList.remove('hidden');
+                document.getElementById('fotovoltaicaDetails').classList.add('hidden');
+            });
+        }
+        
+        // Manejar cambios en modalidad de conexión
+        function handleConnectionModeChange() {
+            const connectionModes = document.querySelectorAll('input[name="connectionMode"]');
+            
+            connectionModes.forEach(mode => {
+                mode.addEventListener('change', () => {
+                    if (mode.value === 'On-grid') {
+                        document.getElementById('onGridDetails').classList.remove('hidden');
+                        document.getElementById('offGridDetails').classList.add('hidden');
+                    } else if (mode.value === 'Off-grid') {
+                        document.getElementById('offGridDetails').classList.remove('hidden');
+                        document.getElementById('onGridDetails').classList.add('hidden');
+                    }
+                });
+            });
+        }
+        
+        // Manejar brújula de orientación
+        function setupCompass() {
+            const compassItems = document.querySelectorAll('.compass-item');
+            const orientationInput = document.getElementById('orientation');
+            
+            compassItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remover selección previa
+                    document.querySelectorAll('.compass-item').forEach(i => {
+                        i.classList.remove('selected');
+                    });
+                    
+                    // Seleccionar elemento actual
+                    item.classList.add('selected');
+                    
+                    // Guardar valor
+                    orientationInput.value = item.dataset.direction;
+                });
+            });
+        }
+        
+        // Mostrar nombre del archivo seleccionado
+        function updateFileName(input) {
+            const fileNameElement = document.getElementById('fileName');
+            if (input.files.length > 0) {
+                fileNameElement.textContent = input.files[0].name;
+            } else {
+                fileNameElement.textContent = '';
+            }
+        }
+        
+        // Enviar formulario
+        document.getElementById('submitForm').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Validar sección actual
+            if (currentSection === 5) {
+                const branch = document.querySelector('input[name="branch"]:checked');
+                
+                if (!branch) {
+                    alert('Por favor selecciona una sucursal para agendar tu reunión.');
+                    return;
+                }
+                
+                // Aquí iría la integración con CRM
+                console.log('Form data collected');
+                
+                // Mostrar sección de confirmación
+                changeSection('section6');
+                
+                // Podría hacerse una petición AJAX aquí
+                // document.getElementById('projectForm').submit();
+            }
+        });
+        
+        // Inicialización cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            handleTechnologyChange();
+            handleConnectionModeChange();
+            setupCompass();
+        });
     </script>
 </body>
 </html>
